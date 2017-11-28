@@ -6,11 +6,13 @@
 
 remote_file "#{Chef::Config[:file_cache_path]}/iterm.zip" do
   source node[:darwin][:iterm][:download_url]
-  owner ENV['USER']
   checksum node[:darwin][:iterm][:checksum]
-  not_if  {
-    File.exists?(node[:darwin][:iterm][:app_path])
-  }
+end
+
+directory node[:darwin][:iterm][:app_path] do
+  action :delete
+  recursive true
+  not_if "[ -e #{node[:darwin][:iterm][:app_path]} ] & defaults read #{node[:darwin][:iterm][:app_path]}/Contents/Info.plist CFBundleVersion | grep #{node[:darwin][:iterm][:version]}"
 end
 
 execute 'unzip iterm' do

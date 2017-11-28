@@ -3,6 +3,7 @@
 default[:darwin][:project][:name] = $WORKSPACE_SETTINGS[:project][:name]
 default[:darwin][:project][:home] = $WORKSPACE_SETTINGS[:paths][:project][:home]
 
+default[:darwin][:iterm][:version] = '3.1.5'
 default[:darwin][:iterm][:download_url] = 'https://iterm2.com/downloads/stable/iTerm2-3_1_5.zip'
 default[:darwin][:iterm][:checksum] = '7159ce6c96fe5c61653a6d6a9a45facfe4a9abff5bfa063e361efd70f89fd769'
 

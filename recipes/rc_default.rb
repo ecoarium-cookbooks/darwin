@@ -11,17 +11,23 @@ end
 
 execute 'mount' do
   command "hdiutil attach #{Chef::Config[:file_cache_path]}/RCDefaultApp.dmg"
-  not_if do ::File.directory?('/Volumes/RCDefaultApp-2.1.X') end
+  only_if {
+    ! ::File.directory?('/Library/PreferencePanes/RCDefaultApp.prefPane') and ! ::File.directory?('/Volumes/RCDefaultApp-2.1.X')
+  }
 end
 
 execute 'move RCDefaultApp.prefPane' do
   command 'cp -a /Volumes/RCDefaultApp-2.1.X/RCDefaultApp.prefPane /Library/PreferencePanes/RCDefaultApp.prefPane'
-  not_if do ::File.directory?('/Library/PreferencePanes/RCDefaultApp.prefPane') end
+  not_if {
+    ::File.directory?('/Library/PreferencePanes/RCDefaultApp.prefPane')
+  }
 end
 
 unmount = execute 'unmount' do
   command 'hdiutil detach /Volumes/RCDefaultApp-2.1.X'
-  only_if do ::File.directory?('/Volumes/RCDefaultApp-2.1.X') end
+  only_if {
+    ::File.directory?('/Volumes/RCDefaultApp-2.1.X')
+  }
 end
 
 Chef.event_handler do
